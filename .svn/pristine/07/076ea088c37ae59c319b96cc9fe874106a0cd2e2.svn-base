@@ -1,0 +1,81 @@
+﻿using MySql.Data.MySqlClient;
+using PraticaWFA.Model;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace PraticaWFA
+{
+    public partial class EditarFuncionario : Form
+    {
+        public int id_f;
+        public EditarFuncionario(string id_f, string nome)
+        {
+            this.id_f = Convert.ToInt16(id_f);
+            this.txt_Nome.Text = nome;
+            InitializeComponent();
+
+          
+            ListaDeControle();
+            Verificarcontroles();
+
+        }
+        public void Verificarcontroles()
+        {
+            Conexao conexao = new Conexao();
+            conexao.openConnection();
+
+
+            MySqlCommand cmd2 = new MySqlCommand();
+
+            cmd2.Connection = conexao.openConnection();
+
+            cmd2.CommandText = "SELECT * FROM magiclink.Controle_pessoa where id_pessoa = " + id_f + ";";
+
+            MySqlDataReader reader = cmd2.ExecuteReader();
+
+
+
+            while (reader.Read())
+            {
+                int id_controle = Convert.ToInt16(reader["id_controle"].ToString());
+
+                checkedListBox1.SetItemCheckState(id_controle - 1, CheckState.Checked);
+
+            }
+
+
+        }
+
+        public void ListaDeControle()
+        {
+            Conexao conexao = new Conexao();
+            conexao.openConnection();
+
+
+            MySqlCommand cmd2 = new MySqlCommand();
+
+            cmd2.Connection = conexao.openConnection();
+
+            cmd2.CommandText = "SELECT * FROM Controle;";
+
+            MySqlDataReader reader = cmd2.ExecuteReader();
+
+
+
+            while (reader.Read())
+            {
+                string controle = reader["descricao_controle"].ToString();
+                checkedListBox1.Items.Add(controle);
+
+            }
+        }
+
+    }
+}

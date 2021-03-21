@@ -1,0 +1,236 @@
+﻿using MySql.Data.MySqlClient;
+using PraticaWFA.Model;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace PraticaWFA
+{
+    public partial class Form3 : Form
+    {
+        public Form3()
+        {
+            InitializeComponent();
+<<<<<<< .mine
+||||||| .r3
+            if (pnl_cad_fisico.Visible == true)
+            {
+                btn_fisica.Normalcolor = Color.FromArgb(36, 36, 36);
+                btn_juridica.Normalcolor = Color.FromArgb(28, 28, 28);
+            }
+            if (pnl_cad_juridica.Visible == true)
+            {
+                btn_juridica.BackColor = Color.FromArgb(36, 36, 36);
+                btn_fisica.Normalcolor = Color.FromArgb(28, 28, 28);
+            }
+=======
+
+            pnl_cad_fisico.Visible = true;
+            pnl_cad_juridica.Visible = false;
+
+            if (pnl_cad_fisico.Visible == true)
+            {
+                btn_fisica.Normalcolor = Color.FromArgb(28, 28, 28);
+                btn_juridica.Normalcolor = Color.FromArgb(36, 36, 36);
+            }
+            else
+            {
+                btn_juridica.Normalcolor = Color.FromArgb(28, 28, 28);
+                btn_fisica.Normalcolor = Color.FromArgb(36, 36, 36);
+            }
+>>>>>>> .r4
+        }
+        
+        public void Campo_Obrigatorio()
+        {
+            bool Campo_vazio = false;
+            errorProvider1.Clear();
+            if (txt_bairro.Text == string.Empty)
+            {
+<<<<<<< .mine
+                errorProvider1.SetError(txt_bairro, "Campo Obrigatório");
+                txt_bairro.Focus();
+                Campo_vazio = true;
+||||||| .r5
+                errorProvider1.SetError(txt_Nome, "Campo Obrigatório");
+                txt_Nome.Focus();
+=======
+                Campo_vazio = true;
+                errorProvider1.SetError(txt_Nome, "Campo Obrigatório");
+                txt_Nome.Focus();
+>>>>>>> .r7
+            }
+            if (txt_cidade.Text == string.Empty)
+            {
+                errorProvider1.SetError(txt_cidade, "Campo Obrigatório");
+                txt_cidade.Focus();
+                Campo_vazio = true;
+                Campo_vazio = true;
+            }
+            if (txt_cep.Text == string.Empty)
+            {
+                errorProvider1.SetError(txt_cep, "Campo Obrigatório");
+                txt_cep.Focus();
+                Campo_vazio = true;
+            }
+            if (txt_numero.Text == string.Empty)
+            {
+                errorProvider1.SetError(txt_numero, "Campo Obrigatório");
+                txt_numero.Focus();
+                Campo_vazio = true;
+            }
+            if (txt_endereco.Text == string.Empty)
+            {
+                errorProvider1.SetError(txt_endereco, "Campo Obrigatório");
+                txt_endereco.Focus();
+                Campo_vazio = true;
+            }
+            if (txt_Senha.Text == string.Empty)
+            {
+                errorProvider1.SetError(txt_Senha, "Campo Obrigatório");
+                txt_Senha.Focus();
+                Campo_vazio = true;
+            }
+            if (txt_Usuario.Text == string.Empty)
+            {
+                errorProvider1.SetError(txt_Usuario, "Campo Obrigatório");
+                txt_Usuario.Focus();
+                Campo_vazio = true;
+            }
+            if (txt_Nascimento.Text == string.Empty)
+            {
+                errorProvider1.SetError(txt_Nascimento, "Campo Obrigatório");
+                txt_Nascimento.Focus();
+                Campo_vazio = true;
+            }
+            if (cb_sexo.Text == string.Empty)
+            {
+                errorProvider1.SetError(cb_sexo, "Campo Obrigatório");
+                cb_sexo.Focus();
+                Campo_vazio = true;
+            }
+            if (Txt_Cpf.Text == string.Empty)
+            {
+                errorProvider1.SetError(Txt_Cpf, "Campo Obrigatório");
+                Txt_Cpf.Focus();
+                Campo_vazio = true;
+            }
+            if (txt_Email.Text == string.Empty)
+            {
+                errorProvider1.SetError(txt_Email, "Campo Obrigatório");
+                txt_Email.Focus();
+                Campo_vazio = true;
+                Campo_vazio = true;
+            }
+<<<<<<< .mine
+            if (txt_Nome.Text == string.Empty)
+||||||| .r5
+            if (txt_Senha.Text == string.Empty)
+=======
+         
+            if (txt_Senha.Text == string.Empty)
+>>>>>>> .r7
+            {
+                
+                errorProvider1.SetError(txt_Nome, "Campo Obrigatório");
+                txt_Nome.Focus();
+                Campo_vazio = true;
+                Campo_vazio = true;
+            }
+<<<<<<< .mine
+            if (Campo_vazio == false)
+            {
+                cadastrar();
+            }
+||||||| .r5
+          
+
+=======
+
+            if(Campo_vazio == false)
+            {
+                cadastrar();
+            }
+
+
+          
+
+>>>>>>> .r7
+        }
+        public static int id;
+        public void cadastrar()
+        {
+            try
+            {
+                Conexao conexao = new Conexao();
+                conexao.openConnection();
+
+                MySql.Data.MySqlClient.MySqlCommand cmd2 = new MySql.Data.MySqlClient.MySqlCommand();
+                cmd2.Connection = conexao.openConnection();
+
+                cmd2.CommandText = "insert into Pessoa (nome,data_nascimento,sexo,cpf_cnpj,email,senha,id_nivel_usuario,data_cadastro) values (@nome,@datanasc,@sexo,@cpf,@email,@senha,1,now());";
+                cmd2.Parameters.AddWithValue("@nome", txt_Nome.Text);
+                cmd2.Parameters.AddWithValue("@datanasc", txt_Nascimento.Text);
+                cmd2.Parameters.AddWithValue("@sexo", cb_sexo.Text);
+                cmd2.Parameters.AddWithValue("@cpf", Txt_Cpf.Text);
+                cmd2.Parameters.AddWithValue("@email", txt_Email.Text);
+                cmd2.Parameters.AddWithValue("@senha", txt_Senha.Text);
+                cmd2.ExecuteNonQuery();
+
+                cmd2.CommandText = "select max(id_pessoa) from Pessoa;";
+                MySqlDataReader reader = cmd2.ExecuteReader();
+                
+                if (reader.Read())
+                { 
+                    id = Convert.ToInt16(reader["max(id_pessoa)"].ToString());
+                }
+
+                MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand();
+                cmd.Connection = conexao.openConnection();
+                cmd.CommandText = "insert into Endereco (id_pessoa,endereco,bairro,numero,cidade_id,cep) values (@idpessoa,@endereço,@bairro,@numero,@cidade,@cep)";
+                cmd.Parameters.AddWithValue("@idpessoa", id);
+                cmd.Parameters.AddWithValue("@endereço", txt_endereco.Text);
+                cmd.Parameters.AddWithValue("@numero", txt_numero.Text);
+                cmd.Parameters.AddWithValue("@cep", txt_cep.Text);
+                cmd.Parameters.AddWithValue("@cidade", txt_cidade.Text);
+                cmd.Parameters.AddWithValue("@bairro", txt_bairro.Text);
+                cmd.ExecuteNonQuery();
+
+                MessageBox.Show("Cadastro realizado com sucesso!");
+            }
+            catch (Exception erro)
+            {
+                MessageBox.Show("Não foi possivel realizar o cadastro \n" + "erro: " + erro);
+            }
+        }
+
+        private void btn_SalvaCad_Click(object sender, EventArgs e)
+        {
+            Campo_Obrigatorio();
+        }
+
+        private void btn_juridica_Click(object sender, EventArgs e)
+        {
+            pnl_cad_juridica.Visible = true;
+            pnl_cad_fisico.Visible = false;
+
+            btn_juridica.Normalcolor = Color.FromArgb(36, 36, 36);
+            btn_fisica.Normalcolor = Color.FromArgb(28, 28, 28);
+        }
+
+        private void btn_fisica_Click(object sender, EventArgs e)
+        {
+            pnl_cad_juridica.Visible = false;
+            pnl_cad_fisico.Visible = true;
+
+            btn_fisica.Normalcolor = Color.FromArgb(36, 36, 36);
+            btn_juridica.Normalcolor = Color.FromArgb(28, 28, 28);
+        }
+    }
+}

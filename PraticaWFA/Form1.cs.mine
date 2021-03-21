@@ -1,0 +1,86 @@
+﻿using MySql.Data.MySqlClient;
+using PraticaWFA.Model;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace PraticaWFA
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+
+        }
+
+        private void bunifuFlatButton2_Click(object sender, EventArgs e)
+        {
+            
+
+        }
+
+        private void btn_cad_Click(object sender, EventArgs e)
+        {
+            if(Txt_Login_senha.Text == string.Empty)
+            {
+                Txt_Login_senha.Focus();
+                errorProvider1.SetError(Txt_Login_senha,"Campo Obrigatório");
+            }
+            
+        }
+
+        private void btn_entrar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                Conexao conexao = new Conexao();
+                conexao.openconnection();
+
+                MySqlCommand cmd = new MySqlCommand("SELECT nome,senha FROM Pessoa where nome=@nome and senha=@senha;");
+                Task.Run(() =>
+                {
+                    cmd.Connection = conexao.openconnection();
+                });
+                while (cmd.Connection == null)
+                {
+                    int i = 0;
+                    timer1.Start();
+                    progresso_Inicial.Value = i;
+                    timer1.Stop();
+                    i++;
+                }
+                
+
+                cmd.Parameters.Add("@nome", MySqlDbType.VarChar).Value = Txt_Login_Usu.Text;
+                cmd.Parameters.Add("@senha", MySqlDbType.VarChar).Value = Txt_Login_senha.Text;
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+
+                    Form2 form2 = new Form2();
+                    form2.Show();
+                    this.Hide();
+                }
+                else
+                {
+                    MessageBox.Show("Usuario ou senha incorreta!");
+
+                }
+            }
+            catch (Exception erro)
+            {
+                MessageBox.Show(erro + " ");
+            }
+        }
+    }
+}
